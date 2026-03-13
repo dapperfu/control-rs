@@ -1,0 +1,10 @@
+[package]
+name = "slicot-test-harness"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+slicot-routines = { path = "../slicot-routines" }
+thiserror = { workspace = true }

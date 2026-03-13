@@ -1,0 +1,22 @@
+[workspace]
+members = [
+    "crates/slicot-linalg",
+    "crates/slicot-routines",
+    "crates/slicot-test-harness",
+]
+default-members = [
+    "crates/slicot-linalg",
+    "crates/slicot-routines",
+    "crates/slicot-test-harness",
+]
+resolver = "2"
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+license = "BSD-3-Clause"
+rust-version = "1.79"
+
+[workspace.dependencies]
+faer = "0.17"
+thiserror = "1.0"

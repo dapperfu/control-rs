@@ -10,7 +10,7 @@ todos:
     status: pending
   - id: bootstrap-workspace
     content: Create the top-level Rust workspace plus crates for linear algebra kernels, routine ports, and regression tooling.
-    status: pending
+    status: completed
   - id: build-upstream-harness
     content: Implement the upstream SLICOT example parser/runner that converts `examples/data/*.dat` and `results/*.res` into Rust golden tests.
     status: pending
