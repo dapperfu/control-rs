@@ -7,3 +7,5 @@ rust-version.workspace = true
 
 [dependencies]
 faer = { workspace = true }
+num-complex = { workspace = true }
+thiserror = { workspace = true }

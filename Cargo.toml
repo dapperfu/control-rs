@@ -19,4 +19,6 @@ rust-version = "1.79"
 
 [workspace.dependencies]
 faer = "0.17"
+nalgebra = "0.33"
+num-complex = "0.4"
 thiserror = "1.0"
