@@ -24,4 +24,7 @@ pub enum CatalogError {
     /// An example file name did not match the upstream `T*.f` naming convention.
     #[error("invalid SLICOT example filename: {path}")]
     InvalidExampleName { path: PathBuf },
+    /// A grouped routine stem did not map to any known SLICOT chapter family.
+    #[error("unknown SLICOT routine stem: {routine_stem}")]
+    UnknownRoutineStem { routine_stem: String },
 }
