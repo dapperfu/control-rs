@@ -10,6 +10,7 @@ mod inventory;
 mod python_control;
 mod sb03md;
 mod sb04md;
+mod sb04qd;
 mod tb04ad;
 mod tb05ad;
 
@@ -27,6 +28,10 @@ pub use sb03md::{
 pub use sb04md::{
     load_sb04md_case, parse_sb04md_input_file, parse_sb04md_result_file, Sb04MdCase,
     Sb04MdExampleError, Sb04MdInput, Sb04MdOutput,
+};
+pub use sb04qd::{
+    load_sb04qd_case, parse_sb04qd_input_file, parse_sb04qd_result_file, Sb04QdCase,
+    Sb04QdExampleError, Sb04QdInput, Sb04QdOutput,
 };
 pub use tb04ad::{
     load_tb04ad_case, parse_tb04ad_input_file, parse_tb04ad_result_file, Tb04AdCase,
