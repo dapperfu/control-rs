@@ -5,9 +5,16 @@
 //! Pure-Rust linear algebra building blocks for SLICOT ports.
 
 mod complex;
+mod real;
 
 pub use complex::{
-    matrix_one_norm, multiply_real_by_complex, solve_complex_system, ComplexMatrixError,
+    matrix_frobenius_norm, matrix_infinity_norm, matrix_one_norm, multiply_real_by_complex,
+    solve_complex_system, ComplexMatrixError,
+};
+pub use real::{
+    add_real_matrices, frobenius_norm_real, identity_real_matrix, matrix_infinity_norm_real,
+    multiply_real_matrices, scale_real_matrix, subtract_real_matrices, trace_real,
+    transpose_real, zero_real_matrix,
 };
 pub use faer::{Mat, MatRef};
 pub use num_complex::Complex64;
