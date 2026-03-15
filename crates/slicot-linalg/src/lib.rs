@@ -12,9 +12,9 @@ pub use complex::{
     solve_complex_system, ComplexMatrixError,
 };
 pub use real::{
-    add_real_matrices, frobenius_norm_real, identity_real_matrix, matrix_infinity_norm_real,
-    multiply_real_matrices, scale_real_matrix, subtract_real_matrices, trace_real,
-    transpose_real, zero_real_matrix,
+    add_real_matrices, diagonal_real, frobenius_norm_real, identity_real_matrix,
+    matrix_infinity_norm_real, matrix_max_abs_real, multiply_real_matrices, outer_product_real,
+    scale_real_matrix, subtract_real_matrices, trace_real, transpose_real, zero_real_matrix,
 };
 pub use faer::{Mat, MatRef};
 pub use num_complex::Complex64;
