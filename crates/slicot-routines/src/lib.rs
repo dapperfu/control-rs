@@ -22,8 +22,14 @@ mod sb02md;
 mod sb02mt;
 mod sb03md;
 mod sb03od;
+mod sb03qd;
+mod sb03sd;
+mod sb03td;
+mod sb03ud;
 mod sb04md;
+mod sb04nd;
 mod sb04qd;
+mod sb04rd;
 mod sb10ad;
 mod sb10hd;
 mod sg02ad;
@@ -55,14 +61,10 @@ pub use routine_id::{RoutineId, PHASE_ONE_ROUTINES, PHASE_TWO_ROUTINES};
 pub use sb01bd::{sb01bd_place, Sb01BdError, Sb01BdResult};
 pub use sb02md::{sb02md_solve, Sb02MdError, Sb02MdResult};
 pub use sb02mt::{sb02mt_transform, Sb02MtError, Sb02MtResult};
-pub use sb03md::{
-    sb03md_solve, sb03qd_solve, sb03sd_solve, sb03td_solve, sb03ud_solve, Sb03MdError, Sb03MdResult,
-};
+pub use sb03md::{sb03md_solve, Sb03MdError, Sb03MdResult};
 pub use sb03od::{sb03od_factor, Sb03OdError, Sb03OdResult};
-pub use sb04md::{sb04md_solve, sb04nd_solve, Sb04MdError, Sb04MdResult};
-pub use sb04qd::{
-    sb04pd_solve, sb04qd_solve, sb04rd_solve, Sb04QdError, Sb04QdResult,
-};
+pub use sb04md::{sb04md_solve, Sb04MdError, Sb04MdResult};
+pub use sb04qd::{sb04pd_solve, sb04qd_solve, Sb04QdError, Sb04QdResult};
 pub use sb10ad::{sb10ad_hinfsyn, Sb10AdError, Sb10AdResult};
 pub use sb10hd::{sb10hd_h2syn, Sb10HdError, Sb10HdResult};
 pub use sg02ad::{sg02ad_solve, Sg02AdError, Sg02AdResult};
@@ -74,3 +76,9 @@ pub use tb05ad::{
     tb05ad_frequency_response, tb05ad_frequency_response_descriptor, Tb05AdError, Tb05AdResult,
 };
 pub use td04ad::{td04ad_tf2ss, Td04AdError, Td04AdResult};
+pub use sb03qd::{sb03qd_solve, Sb03QdError, Sb03QdResult};
+pub use sb03sd::{sb03sd_solve, Sb03SdError, Sb03SdResult};
+pub use sb03td::{sb03td_solve, Sb03TdError, Sb03TdResult};
+pub use sb03ud::{sb03ud_solve, Sb03UdError, Sb03UdResult};
+pub use sb04nd::{sb04nd_solve, Sb04NdError, Sb04NdResult};
+pub use sb04rd::{sb04rd_solve, Sb04RdError, Sb04RdResult};
