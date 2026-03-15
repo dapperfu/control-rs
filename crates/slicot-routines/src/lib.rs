@@ -6,6 +6,7 @@
 
 mod ab13bd;
 mod ab13dd;
+mod ab13md;
 mod compatibility;
 mod module_map;
 mod routine_id;
@@ -25,6 +26,7 @@ pub use compatibility::{phase_one_compatibility, PythonControlUsage};
 pub use module_map::{target_rust_module_for_stem, TargetRustModule};
 pub use ab13bd::{ab13bd_norm, Ab13BdError};
 pub use ab13dd::{ab13dd_norm, Ab13DdError, Ab13DdResult};
+pub use ab13md::{ab13md_norm, Ab13MdError};
 pub use routine_id::{RoutineId, PHASE_ONE_ROUTINES};
 pub use sb02md::{sb02md_solve, Sb02MdError, Sb02MdResult};
 pub use sb02mt::{sb02mt_transform, Sb02MtError, Sb02MtResult};
