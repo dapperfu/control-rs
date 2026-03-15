@@ -18,6 +18,7 @@ mod sb03td;
 mod sb03ud;
 mod sb04md;
 mod sb04nd;
+mod sb04pd;
 mod sb04qd;
 mod sb04rd;
 mod sg03ad;
@@ -71,6 +72,10 @@ pub use sb04md::{
 pub use sb04nd::{
     load_sb04nd_case, parse_sb04nd_input_file, parse_sb04nd_result_file, Sb04NdCase,
     Sb04NdExampleError, Sb04NdInput, Sb04NdOutput,
+};
+pub use sb04pd::{
+    load_sb04pd_case, parse_sb04pd_input_file, parse_sb04pd_result_file, Sb04PdCase,
+    Sb04PdExampleError, Sb04PdInput, Sb04PdOutput,
 };
 pub use sb04qd::{
     load_sb04qd_case, parse_sb04qd_input_file, parse_sb04qd_result_file, Sb04QdCase,
