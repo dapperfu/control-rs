@@ -1,7 +1,13 @@
-.PHONY: build clean format help lint run test test-coverage test-doc test-verbose
+.PHONY: bench build clean compare format help lint run test test-coverage test-doc test-verbose
+
+bench:
+	cargo bench -p slicot-bench
 
 build:
 	cargo build --workspace
+
+compare:
+	cargo run -p slicot-bench --bin compare_rust_vs_reference -- SLICOT-Reference/examples
 
 run:
 	cargo run --package slicot-test-harness --example list_example_cases -- SLICOT-Reference/examples
@@ -29,7 +35,9 @@ clean:
 
 help:
 	@printf '%s\n' \
+		'bench          Run Criterion benchmarks for Rust SLICOT routines' \
 		'build          Build all workspace crates' \
+		'compare        Compare Rust routine outputs to Fortran reference (.res)' \
 		'run            Print a summary of upstream SLICOT example coverage' \
 		'test           Run unit, integration, and documentation tests' \
 		'test-verbose   Run tests without output capture' \
