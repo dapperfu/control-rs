@@ -100,24 +100,24 @@ pub fn parse_ab13bd_input_file(
         .next()
         .ok_or(Ab13BdExampleError::UnexpectedEnd { field: "header" })?;
     let mut tokens = header.split_whitespace();
-    let n = parse_next_usize(&mut tokens, "n")?;
-    let m = parse_next_usize(&mut tokens, "m")?;
-    let p = parse_next_usize(&mut tokens, "p")?;
+    let state_dim = parse_next_usize(&mut tokens, "n")?;
+    let input_dim = parse_next_usize(&mut tokens, "m")?;
+    let output_dim = parse_next_usize(&mut tokens, "p")?;
     let tol = parse_next_f64(&mut tokens, "tol")?;
     let dico = parse_mode_flag(next_token(&mut tokens, "dico")?)?;
     let jobn = parse_mode_flag(next_token(&mut tokens, "jobn")?)?;
 
     let body = lines.collect::<Vec<_>>().join(" ");
     let mut body_tokens = body.split_whitespace();
-    let a = read_row_major_matrix(&mut body_tokens, n, n, "A")?;
-    let b = read_row_major_matrix(&mut body_tokens, n, m, "B")?;
-    let c = read_row_major_matrix(&mut body_tokens, p, n, "C")?;
-    let d = read_row_major_matrix(&mut body_tokens, p, m, "D")?;
+    let a = read_row_major_matrix(&mut body_tokens, state_dim, state_dim, "A")?;
+    let b = read_row_major_matrix(&mut body_tokens, state_dim, input_dim, "B")?;
+    let c = read_row_major_matrix(&mut body_tokens, output_dim, state_dim, "C")?;
+    let d = read_row_major_matrix(&mut body_tokens, output_dim, input_dim, "D")?;
 
     Ok(Ab13BdInput {
-        n,
-        m,
-        p,
+        n: state_dim,
+        m: input_dim,
+        p: output_dim,
         tol,
         dico,
         jobn,
