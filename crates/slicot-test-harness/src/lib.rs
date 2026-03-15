@@ -24,6 +24,7 @@ mod sb04rd;
 mod sg02ad;
 mod sg03ad;
 mod sg03bd;
+mod tb01pd;
 mod tb04ad;
 mod tb05ad;
 
@@ -97,6 +98,10 @@ pub use sg03ad::{
 pub use sg03bd::{
     load_sg03bd_case, parse_sg03bd_input_file, parse_sg03bd_result_file, Sg03BdCase,
     Sg03BdExampleError, Sg03BdInput, Sg03BdOutput,
+};
+pub use tb01pd::{
+    load_tb01pd_case, parse_tb01pd_input_file, parse_tb01pd_result_file, Tb01PdCase,
+    Tb01PdExampleError, Tb01PdInput, Tb01PdOutput,
 };
 pub use tb04ad::{
     load_tb04ad_case, parse_tb04ad_input_file, parse_tb04ad_result_file, Tb04AdCase,
