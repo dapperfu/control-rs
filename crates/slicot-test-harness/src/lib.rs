@@ -8,6 +8,7 @@ mod catalog;
 mod error;
 mod inventory;
 mod python_control;
+mod sb02md;
 mod sb03md;
 mod sb03od;
 mod sb04md;
@@ -22,6 +23,10 @@ pub use inventory::{discover_routine_inventory, RoutineInventoryEntry};
 pub use python_control::{
     phase_one_python_control_targets, resolve_phase_one_python_control_targets,
     PythonControlTarget, ResolvedPythonControlTarget,
+};
+pub use sb02md::{
+    load_sb02md_case, parse_sb02md_input_file, parse_sb02md_result_file, Sb02MdCase,
+    Sb02MdExampleError, Sb02MdInput, Sb02MdOutput,
 };
 pub use sb03md::{
     load_sb03md_case, parse_sb03md_input_file, parse_sb03md_result_file, Sb03MdCase,
