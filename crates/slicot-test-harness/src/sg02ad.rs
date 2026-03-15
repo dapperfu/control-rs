@@ -1,7 +1,7 @@
 //! Parsers for the upstream `SG02AD` (generalized algebraic Riccati equation) example assets.
 //!
-//! SG02AD solves continuous or discrete generalized CARE/DARE. No routine port yet;
-//! harness provides parse tests and an ignored golden routine test.
+//! SG02AD solves continuous or discrete generalized CARE/DARE. The routine subset
+//! E = I, L = 0 (continuous) is implemented in `slicot-routines`; golden test runs when fixture matches.
 
 use std::{
     fs,
