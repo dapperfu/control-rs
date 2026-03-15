@@ -124,6 +124,27 @@ pub fn matrix_one_norm(matrix: &[Vec<Complex64>]) -> f64 {
     })
 }
 
+/// Returns the Frobenius norm of a real matrix, i.e. the square root of the sum
+/// of squares of all entries.
+#[must_use]
+pub fn matrix_frobenius_norm(matrix: &[Vec<f64>]) -> f64 {
+    matrix
+        .iter()
+        .flat_map(|row| row.iter())
+        .map(|&x| x * x)
+        .sum::<f64>()
+        .sqrt()
+}
+
+/// Returns the infinity norm of a real matrix, i.e. the largest absolute row sum.
+#[must_use]
+pub fn matrix_infinity_norm(matrix: &[Vec<f64>]) -> f64 {
+    matrix
+        .iter()
+        .map(|row| row.iter().map(|&x| x.abs()).sum::<f64>())
+        .fold(0.0_f64, f64::max)
+}
+
 /// Multiplies a real-valued matrix by a complex-valued matrix.
 #[must_use]
 pub fn multiply_real_by_complex(
