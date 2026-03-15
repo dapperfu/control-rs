@@ -223,12 +223,71 @@ pub fn trace_real(matrix: &[Vec<f64>]) -> f64 {
         .sum()
 }
 
+/// Extracts the diagonal of a square real matrix as a vector.
+///
+/// # Examples
+///
+/// ```
+/// use slicot_linalg::diagonal_real;
+///
+/// let a = vec![vec![1.0, 2.0], vec![3.0, 4.0]];
+/// assert_eq!(diagonal_real(&a), vec![1.0, 4.0]);
+/// ```
+#[must_use]
+pub fn diagonal_real(matrix: &[Vec<f64>]) -> Vec<f64> {
+    matrix
+        .iter()
+        .enumerate()
+        .filter_map(|(i, row)| row.get(i).copied())
+        .collect()
+}
+
+/// Returns the maximum absolute value of any element in the matrix.
+///
+/// # Examples
+///
+/// ```
+/// use slicot_linalg::matrix_max_abs_real;
+///
+/// let a = vec![vec![1.0, -3.0], vec![2.0, 0.5]];
+/// assert!((matrix_max_abs_real(&a) - 3.0).abs() < 1e-10);
+/// ```
+#[must_use]
+pub fn matrix_max_abs_real(matrix: &[Vec<f64>]) -> f64 {
+    matrix
+        .iter()
+        .flat_map(|row| row.iter())
+        .map(|x| x.abs())
+        .fold(0.0_f64, f64::max)
+}
+
+/// Computes the outer product of two real vectors: u * v^T (column * row).
+///
+/// Returns a matrix of shape (u.len() × v.len()).
+///
+/// # Examples
+///
+/// ```
+/// use slicot_linalg::outer_product_real;
+///
+/// let u = vec![1.0, 2.0];
+/// let v = vec![3.0, 4.0];
+/// let m = outer_product_real(&u, &v);
+/// assert_eq!(m, vec![vec![3.0, 4.0], vec![6.0, 8.0]]);
+/// ```
+#[must_use]
+pub fn outer_product_real(u: &[f64], v: &[f64]) -> Vec<Vec<f64>> {
+    u.iter()
+        .map(|ui| v.iter().map(|vj| ui * vj).collect())
+        .collect()
+}
+
 #[cfg(test)]
 mod tests {
     use super::{
-        add_real_matrices, frobenius_norm_real, identity_real_matrix, matrix_infinity_norm_real,
-        multiply_real_matrices, scale_real_matrix, subtract_real_matrices, trace_real,
-        transpose_real, zero_real_matrix,
+        add_real_matrices, diagonal_real, frobenius_norm_real, identity_real_matrix,
+        matrix_infinity_norm_real, matrix_max_abs_real, multiply_real_matrices, outer_product_real,
+        scale_real_matrix, subtract_real_matrices, trace_real, transpose_real, zero_real_matrix,
     };
 
     #[test]
@@ -301,5 +360,25 @@ mod tests {
     fn trace_real_1x1() {
         let a = vec![vec![7.0]];
         assert!((trace_real(&a) - 7.0).abs() < 1e-10);
+    }
+
+    #[test]
+    fn diagonal_real_2x2() {
+        let a = vec![vec![1.0, 2.0], vec![3.0, 4.0]];
+        assert_eq!(diagonal_real(&a), vec![1.0, 4.0]);
+    }
+
+    #[test]
+    fn matrix_max_abs_real_negative() {
+        let a = vec![vec![1.0, -5.0], vec![2.0, 3.0]];
+        assert!((matrix_max_abs_real(&a) - 5.0).abs() < 1e-10);
+    }
+
+    #[test]
+    fn outer_product_real_2x2() {
+        let u = vec![1.0, 2.0];
+        let v = vec![3.0, 4.0];
+        let m = outer_product_real(&u, &v);
+        assert_eq!(m, vec![vec![3.0, 4.0], vec![6.0, 8.0]]);
     }
 }
