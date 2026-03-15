@@ -1,5 +1,6 @@
 [workspace]
 members = [
+    "crates/slicot-bench",
     "crates/slicot-linalg",
     "crates/slicot-routines",
     "crates/slicot-test-harness",
