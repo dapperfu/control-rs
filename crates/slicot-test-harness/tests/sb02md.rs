@@ -31,3 +31,10 @@ fn parses_sb02md_output_fixture() {
     assert_eq!(sb02md.output.x[0], vec![2.0, 1.0]);
     assert_eq!(sb02md.output.x[1], vec![1.0, 2.0]);
 }
+
+#[test]
+fn sb02md_case_loads() {
+    let case = load_sb02md_case(examples_root()).expect("SB02MD case should load");
+    assert_eq!(case.input.n, 2);
+    assert_eq!(case.output.x.len(), 2);
+}
