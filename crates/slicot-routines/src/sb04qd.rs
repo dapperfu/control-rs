@@ -91,6 +91,28 @@ pub fn sb04qd_solve(
     })
 }
 
+/// Solves the discrete-time Sylvester equation `X + A X B = scale * C` (SB04PD API).
+///
+/// Equivalent to [`sb04qd_solve`](crate::sb04qd_solve).
+pub fn sb04pd_solve(
+    left_matrix: &[Vec<f64>],
+    right_matrix: &[Vec<f64>],
+    rhs_matrix: &[Vec<f64>],
+) -> Result<Sb04QdResult, Sb04QdError> {
+    sb04qd_solve(left_matrix, right_matrix, rhs_matrix)
+}
+
+/// Solves the discrete-time Sylvester equation `X + A X B = C` (SB04RD API).
+///
+/// Equivalent to [`sb04qd_solve`](crate::sb04qd_solve).
+pub fn sb04rd_solve(
+    left_matrix: &[Vec<f64>],
+    right_matrix: &[Vec<f64>],
+    rhs_matrix: &[Vec<f64>],
+) -> Result<Sb04QdResult, Sb04QdError> {
+    sb04qd_solve(left_matrix, right_matrix, rhs_matrix)
+}
+
 fn build_discrete_sylvester_system(
     left_matrix: &[Vec<f64>],
     right_matrix: &[Vec<f64>],
