@@ -13,6 +13,7 @@ mod sb02md;
 mod sb03md;
 mod sb03od;
 mod sb03sd;
+mod sb03td;
 mod sb04md;
 mod sb04qd;
 mod sg03ad;
@@ -45,6 +46,10 @@ pub use sb03od::{
 pub use sb03sd::{
     load_sb03sd_case, parse_sb03sd_input_file, parse_sb03sd_result_file, Sb03SdCase,
     Sb03SdExampleError, Sb03SdInput, Sb03SdOutput,
+};
+pub use sb03td::{
+    load_sb03td_case, parse_sb03td_input_file, parse_sb03td_result_file, Sb03TdCase,
+    Sb03TdExampleError, Sb03TdInput, Sb03TdOutput,
 };
 pub use sb04md::{
     load_sb04md_case, parse_sb04md_input_file, parse_sb04md_result_file, Sb04MdCase,
