@@ -1,0 +1,22 @@
+[package]
+name = "slicot-bench"
+version = "0.1.0"
+edition = "2021"
+license = "BSD-3-Clause"
+rust-version = "1.79"
+description = "Benchmark and correctness comparison for Rust vs Fortran reference (SLICOT)"
+
+[dependencies]
+slicot-routines = { path = "../slicot-routines" }
+slicot-test-harness = { path = "../slicot-test-harness" }
+
+[dev-dependencies]
+criterion = { version = "0.5", features = ["html_reports"] }
+
+[[bench]]
+name = "rust_routines"
+harness = false
+
+[[bin]]
+name = "compare_rust_vs_reference"
+path = "src/bin/compare_rust_vs_reference.rs"
