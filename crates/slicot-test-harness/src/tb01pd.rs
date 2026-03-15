@@ -1,7 +1,7 @@
 //! Parsers for the upstream `TB01PD` (minimal realization) example assets.
 //!
-//! TB01PD computes a minimal state-space realization. No routine port yet;
-//! harness provides parse tests and an ignored golden routine test.
+//! TB01PD computes a minimal state-space realization. The routine is implemented
+//! in `slicot-routines`; the golden test compares order and matrix dimensions.
 
 use std::{
     fs,
