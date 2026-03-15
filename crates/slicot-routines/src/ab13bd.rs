@@ -1,8 +1,8 @@
-//! Pure-Rust implementation of the `AB13BD` L2/H2 norm subset for continuous-time
-//! state-space systems.
+//! Pure-Rust implementation of the `AB13BD` L2/H2 norm subset for continuous- and
+//! discrete-time state-space systems.
 //!
-//! For stable A, the H2 norm is computed via the observability Gramian:
-//! A' P + P A + C' C = 0, then norm^2 = trace(B' P B) + trace(D' D).
+//! For stable A: continuous uses observability Gramian A' P + P A = -C' C;
+//! discrete uses A' P A - P = -C' C. Then norm^2 = trace(B' P B) + trace(D' D).
 
 use crate::sb03md_solve;
 use thiserror::Error;
@@ -23,11 +23,12 @@ pub enum Ab13BdError {
 }
 
 /// Computes the H2 (continuous-time) or L2 norm of the transfer function
-/// G(s) = C(sI - A)^{-1} B + D.
+/// G(s) = C(sI - A)^{-1} B + D or G(z) = C(zI - A)^{-1} B + D.
 ///
 /// For continuous-time (dico = 'C'): solves A' P + P A = -C' C for the
-/// observability Gramian P, then norm^2 = trace(B' P B) + trace(D' D).
-/// Requires A to be stable (eigenvalues in the open left half-plane).
+/// observability Gramian P. For discrete-time (dico = 'D'): solves
+/// A' P A - P = -C' C. Then norm^2 = trace(B' P B) + trace(D' D).
+/// Requires A to be stable (continuous: open left half-plane; discrete: inside unit circle).
 ///
 /// # Errors
 ///
@@ -58,16 +59,16 @@ pub fn ab13bd_norm(
         ));
     }
 
-    if dico != 'C' {
+    if dico != 'C' && dico != 'D' {
         return Err(Ab13BdError::IncompatibleDimensions(
-            "only continuous-time (dico='C') is supported".to_string(),
+            "dico must be 'C' (continuous) or 'D' (discrete)".to_string(),
         ));
     }
 
-    // Observability Gramian: A' P + P A = -C' C  (C is p×n, so C' C is n×n)
+    // Observability Gramian: continuous A' P + P A = -C' C; discrete A' P A - P = -C' C
     let ctc = matmul_at_b(p, n, c, p, n, c);
     let neg_ctc = ctc.iter().map(|row| row.iter().map(|&x| -x).collect()).collect::<Vec<_>>();
-    let lyap_result = sb03md_solve('C', 'X', 'N', 'N', a, &neg_ctc)
+    let lyap_result = sb03md_solve(dico, 'X', 'N', 'N', a, &neg_ctc)
         .map_err(Ab13BdError::Lyapunov)?;
     let gramian_p = lyap_result.x;
 
@@ -144,6 +145,18 @@ mod tests {
         let d = vec![vec![0.0]];
         let norm = ab13bd_norm('C', &a, &b, &c, &d).expect("stable system");
         let expected = 1.0 / 2.0_f64.sqrt();
+        assert!((norm - expected).abs() < 1.0e-10);
+    }
+
+    #[test]
+    fn l2_norm_stable_discrete_scalar_system() {
+        // G(z) = 1/(z - 0.5): A=0.5, B=1, C=1, D=0. A' P A - P = -1 => 0.25 P - P = -1 => P = 4/3, norm^2 = 4/3
+        let a = vec![vec![0.5]];
+        let b = vec![vec![1.0]];
+        let c = vec![vec![1.0]];
+        let d = vec![vec![0.0]];
+        let norm = ab13bd_norm('D', &a, &b, &c, &d).expect("stable discrete system");
+        let expected = (4.0 / 3.0_f64).sqrt();
         assert!((norm - expected).abs() < 1.0e-10);
     }
 }
