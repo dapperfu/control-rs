@@ -12,10 +12,12 @@ mod python_control;
 mod sb02md;
 mod sb03md;
 mod sb03od;
+mod sb03qd;
 mod sb03sd;
 mod sb03td;
 mod sb03ud;
 mod sb04md;
+mod sb04nd;
 mod sb04qd;
 mod sg03ad;
 mod tb04ad;
@@ -48,6 +50,10 @@ pub use sb03sd::{
     load_sb03sd_case, parse_sb03sd_input_file, parse_sb03sd_result_file, Sb03SdCase,
     Sb03SdExampleError, Sb03SdInput, Sb03SdOutput,
 };
+pub use sb03qd::{
+    load_sb03qd_case, parse_sb03qd_input_file, parse_sb03qd_result_file, Sb03QdCase,
+    Sb03QdExampleError, Sb03QdInput, Sb03QdOutput,
+};
 pub use sb03td::{
     load_sb03td_case, parse_sb03td_input_file, parse_sb03td_result_file, Sb03TdCase,
     Sb03TdExampleError, Sb03TdInput, Sb03TdOutput,
@@ -59,6 +65,10 @@ pub use sb03ud::{
 pub use sb04md::{
     load_sb04md_case, parse_sb04md_input_file, parse_sb04md_result_file, Sb04MdCase,
     Sb04MdExampleError, Sb04MdInput, Sb04MdOutput,
+};
+pub use sb04nd::{
+    load_sb04nd_case, parse_sb04nd_input_file, parse_sb04nd_result_file, Sb04NdCase,
+    Sb04NdExampleError, Sb04NdInput, Sb04NdOutput,
 };
 pub use sb04qd::{
     load_sb04qd_case, parse_sb04qd_input_file, parse_sb04qd_result_file, Sb04QdCase,
