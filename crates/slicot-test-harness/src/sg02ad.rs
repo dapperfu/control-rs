@@ -104,16 +104,29 @@ pub fn parse_sg02ad_input_file(
     let mut tokens = header.split_whitespace();
     let n = parse_next_usize(&mut tokens, "n")?;
     let m = parse_next_usize(&mut tokens, "m")?;
+    let p = parse_next_usize(&mut tokens, "p")?;
     let dico = parse_dico_from_header(header)?;
+    let fact = parse_fact_from_header(header)?;
 
+    // SLICOT .dat: A, E, B, Q (Fortran writes Q as P×N when FACT='B'), then R or D, then L (if JOBL='N').
+    // When FACT='B' or 'D', the file stores D (P×M); we form R = D'*D (M×M).
     let body = lines.collect::<Vec<_>>().join(" ");
     let mut body_tokens = body.split_whitespace();
     let a = read_row_major_matrix(&mut body_tokens, n, n, "A")?;
     let e = read_row_major_matrix(&mut body_tokens, n, n, "E")?;
     let b = read_row_major_matrix(&mut body_tokens, n, m, "B")?;
     let q = read_row_major_matrix(&mut body_tokens, n, n, "Q")?;
-    let r = read_row_major_matrix(&mut body_tokens, m, m, "R")?;
-    let l = read_row_major_matrix(&mut body_tokens, n, m, "L")?;
+    let q_skip = p.saturating_sub(n) * n;
+    for _ in 0..q_skip {
+        next_token(&mut body_tokens, "Q_skip")?;
+    }
+    let r = if fact == 'B' || fact == 'D' {
+        let d = read_row_major_matrix(&mut body_tokens, p, m, "D")?;
+        d_transpose_times_d(&d)
+    } else {
+        read_row_major_matrix(&mut body_tokens, m, m, "R")?
+    };
+    let l = read_row_major_matrix_optional(&mut body_tokens, n, m, "L")?;
 
     Ok(Sg02AdInput {
         n,
@@ -126,6 +139,36 @@ pub fn parse_sg02ad_input_file(
         r,
         l,
     })
+}
+
+fn parse_fact_from_header(header: &str) -> Result<char, Sg02AdExampleError> {
+    let tokens: Vec<&str> = header.split_whitespace().collect();
+    // N, M, P, TOL, DICO, JOBB, FACT, ...
+    if tokens.len() < 7 {
+        return Err(Sg02AdExampleError::UnexpectedEnd { field: "fact" });
+    }
+    let fact_token = tokens[6];
+    let mut ch = fact_token.chars();
+    match ch.next() {
+        Some(c) if ch.next().is_none() => Ok(c),
+        _ => Err(Sg02AdExampleError::InvalidModeFlag {
+            value: fact_token.to_owned(),
+        }),
+    }
+}
+
+fn d_transpose_times_d(d: &[Vec<f64>]) -> Vec<Vec<f64>> {
+    let p = d.len();
+    let m = d.first().map_or(0, |row| row.len());
+    let mut r = vec![vec![0.0; m]; m];
+    for j in 0..m {
+        for i in 0..m {
+            for k in 0..p {
+                r[i][j] += d[k][i] * d[k][j];
+            }
+        }
+    }
+    r
 }
 
 fn parse_dico_from_header(header: &str) -> Result<char, Sg02AdExampleError> {
@@ -203,6 +246,29 @@ fn read_row_major_matrix<'input>(
     for row in &mut matrix {
         for value in row {
             *value = parse_next_f64(tokens, field)?;
+        }
+    }
+    Ok(matrix)
+}
+
+/// Read row-major matrix; if tokens run out, fill remaining elements with 0.
+fn read_row_major_matrix_optional<'input>(
+    tokens: &mut impl Iterator<Item = &'input str>,
+    rows: usize,
+    columns: usize,
+    field: &'static str,
+) -> Result<Vec<Vec<f64>>, Sg02AdExampleError> {
+    let mut matrix = vec![vec![0.0; columns]; rows];
+    for row in &mut matrix {
+        for value in row {
+            if let Some(t) = tokens.next() {
+                let normalized = t.replace('D', "E").replace('d', "e");
+                *value = normalized.parse().map_err(|source| Sg02AdExampleError::ParseFloat {
+                    field,
+                    token: t.to_owned(),
+                    source,
+                })?;
+            }
         }
     }
     Ok(matrix)
