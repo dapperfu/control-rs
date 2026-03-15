@@ -29,3 +29,10 @@ fn parses_ab13bd_output_fixture() {
 
     assert!((ab13bd.output.norm - 7.939_48).abs() < 1.0e-5);
 }
+
+#[test]
+fn ab13bd_case_loads() {
+    let case = load_ab13bd_case(examples_root()).expect("AB13BD case should load");
+    assert_eq!(case.input.n, 7);
+    assert!(case.output.norm > 0.0);
+}
