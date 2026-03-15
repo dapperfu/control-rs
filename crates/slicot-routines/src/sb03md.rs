@@ -40,7 +40,7 @@ pub struct Sb03MdResult {
 ///
 /// Supported subset:
 /// - `job = 'X'`
-/// - `fact = 'N'`
+/// - `fact = 'N'` or `fact = 'F'` (F: input is Cholesky factor U, RHS = -U'*U)
 /// - `dico = 'C'` or `dico = 'D'`
 /// - `trana = 'N'` or `trana = 'T'`
 ///
@@ -60,7 +60,7 @@ pub fn sb03md_solve(
     if !matches!(job, 'X') {
         return Err(Sb03MdError::UnsupportedJob { job });
     }
-    if !matches!(fact, 'N') {
+    if !matches!(fact, 'N' | 'F') {
         return Err(Sb03MdError::UnsupportedFact { fact });
     }
 
@@ -78,6 +78,12 @@ pub fn sb03md_solve(
         });
     }
 
+    let c_rhs = if fact == 'F' {
+        negate_matrix(&multiply_transpose_self(c))
+    } else {
+        c.to_vec()
+    };
+
     let aop = if matches!(trana, 'N') {
         a.to_vec()
     } else {
@@ -89,7 +95,7 @@ pub fn sb03md_solve(
         'D' => build_discrete_lyapunov_system(&aop_transpose),
         _ => return Err(Sb03MdError::UnsupportedDico { dico }),
     };
-    let rhs = vectorize_real_matrix(c)
+    let rhs = vectorize_real_matrix(&c_rhs)
         .into_iter()
         .map(|value| vec![Complex64::new(value, 0.0)])
         .collect::<Vec<_>>();
@@ -103,6 +109,55 @@ pub fn sb03md_solve(
     );
 
     Ok(Sb03MdResult { x, scale: 1.0 })
+}
+
+/// Solves the continuous-time Lyapunov equation `A X + X A' = scale * C` (SB03QD API).
+///
+/// Equivalent to `sb03md_solve('C', 'X', 'N', 'N', a, c)`.
+pub fn sb03qd_solve(a: &[Vec<f64>], c: &[Vec<f64>]) -> Result<Sb03MdResult, Sb03MdError> {
+    sb03md_solve('C', 'X', 'N', 'N', a, c)
+}
+
+/// Solves the discrete-time Lyapunov equation `A X A' - X = scale * C` (SB03SD API).
+///
+/// Equivalent to `sb03md_solve('D', 'X', 'N', 'N', a, c)`.
+pub fn sb03sd_solve(a: &[Vec<f64>], c: &[Vec<f64>]) -> Result<Sb03MdResult, Sb03MdError> {
+    sb03md_solve('D', 'X', 'N', 'N', a, c)
+}
+
+/// Solves the continuous-time Lyapunov equation `A' X + X A = scale * C` (SB03TD API).
+///
+/// Equivalent to `sb03md_solve('C', 'X', 'N', 'T', a, c)`.
+pub fn sb03td_solve(a: &[Vec<f64>], c: &[Vec<f64>]) -> Result<Sb03MdResult, Sb03MdError> {
+    sb03md_solve('C', 'X', 'N', 'T', a, c)
+}
+
+/// Solves the discrete-time Lyapunov equation `A' X A - X = scale * C` (SB03UD API).
+///
+/// Equivalent to `sb03md_solve('D', 'X', 'N', 'T', a, c)`.
+pub fn sb03ud_solve(a: &[Vec<f64>], c: &[Vec<f64>]) -> Result<Sb03MdResult, Sb03MdError> {
+    sb03md_solve('D', 'X', 'N', 'T', a, c)
+}
+
+fn multiply_transpose_self(u: &[Vec<f64>]) -> Vec<Vec<f64>> {
+    let n = u.len();
+    let mut out = vec![vec![0.0; n]; n];
+    for i in 0..n {
+        for j in 0..n {
+            let mut s = 0.0;
+            for k in 0..n {
+                s += u[k][i] * u[k][j];
+            }
+            out[i][j] = s;
+        }
+    }
+    out
+}
+
+fn negate_matrix(m: &[Vec<f64>]) -> Vec<Vec<f64>> {
+    m.iter()
+        .map(|row| row.iter().map(|&x| -x).collect())
+        .collect()
 }
 
 fn transpose(matrix: &[Vec<f64>]) -> Vec<Vec<f64>> {
