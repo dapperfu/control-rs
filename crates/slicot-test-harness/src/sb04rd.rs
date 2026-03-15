@@ -1,7 +1,7 @@
-//! Parsers for the upstream `SB04RD` (Sylvester equation) example assets.
+//! Parsers for the upstream `SB04RD` (discrete Sylvester) example assets.
 //!
-//! SB04RD uses a different equation form or scaling than SB04MD; no golden
-//! routine test is provided. Parse and case-load tests only.
+//! SB04RD solves the same equation as SB04QD: `X + A X B = C`. The fixture
+//! is validated by `sb04qd_solve`.
 
 use std::{
     fs,

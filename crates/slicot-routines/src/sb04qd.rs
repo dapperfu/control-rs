@@ -34,7 +34,7 @@ pub struct Sb04QdResult {
     pub z: Vec<Vec<f64>>,
 }
 
-/// Solves the discrete-time Sylvester equation `A X B - X = C`.
+/// Solves the discrete-time Sylvester equation `X + A X B = C`.
 ///
 /// # Errors
 ///
