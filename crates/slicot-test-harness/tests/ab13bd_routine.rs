@@ -1,8 +1,7 @@
-//! Golden test: AB13BD (L2/H2 norm) matches upstream fixture when system is stable.
+//! Golden tests for AB13BD (L2/H2 norm).
 //!
-//! The upstream AB13BD example has an unstable A matrix; the current implementation
-//! uses the observability-Gramian formula and supports only stable A. This test is
-//! ignored until we add a fixture with stable A or implement unstable-case handling.
+//! - `ab13bd_stable_system_norm`: runnable test with inline stable system.
+//! - `pure_rust_ab13bd_matches_upstream_fixture`: ignored (upstream A is unstable).
 
 use std::path::{Path, PathBuf};
 
@@ -14,6 +13,21 @@ fn examples_root() -> PathBuf {
         .join("../../SLICOT-Reference/examples")
         .canonicalize()
         .expect("SLICOT examples directory should exist")
+}
+
+/// Stable scalar system G(s) = 1/(s+1): H2 norm = 1/sqrt(2).
+#[test]
+fn ab13bd_stable_system_norm() {
+    let a = vec![vec![-1.0]];
+    let b = vec![vec![1.0]];
+    let c = vec![vec![1.0]];
+    let d = vec![vec![0.0]];
+    let norm = ab13bd_norm('C', &a, &b, &c, &d).expect("stable system should succeed");
+    let expected = 1.0 / 2.0_f64.sqrt();
+    assert!(
+        (norm - expected).abs() < 1.0e-9,
+        "norm {norm} vs expected {expected}"
+    );
 }
 
 #[test]
