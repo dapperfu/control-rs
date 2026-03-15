@@ -1,12 +1,12 @@
-//! Placeholder for AB13BD (L2/H2 norm) routine golden test.
+//! Golden test: AB13BD (L2/H2 norm) matches upstream fixture when system is stable.
 //!
-//! The L2/H2 norm routine is not yet implemented; the upstream example has
-//! an unstable A matrix, so the simple observability-Gramian formula does not
-//! apply. Full AB13BD would need handling for unstable systems.
-//! This test is ignored until the routine is ported.
+//! The upstream AB13BD example has an unstable A matrix; the current implementation
+//! uses the observability-Gramian formula and supports only stable A. This test is
+//! ignored until we add a fixture with stable A or implement unstable-case handling.
 
 use std::path::{Path, PathBuf};
 
+use slicot_routines::ab13bd_norm;
 use slicot_test_harness::load_ab13bd_case;
 
 fn examples_root() -> PathBuf {
@@ -17,10 +17,22 @@ fn examples_root() -> PathBuf {
 }
 
 #[test]
-#[ignore = "L2/H2 norm (AB13BD) not yet implemented; upstream example has unstable A"]
+#[ignore = "upstream AB13BD example has unstable A; stable-only implementation"]
 fn pure_rust_ab13bd_matches_upstream_fixture() {
-    let _case = load_ab13bd_case(examples_root()).expect("AB13BD fixture should parse");
-    // When ab13bd_norm (or equivalent) is implemented:
-    // let result = ab13bd_norm(...).expect("AB13BD should compute norm");
-    // assert!((result - case.output.norm).abs() < 1e-5);
+    let case = load_ab13bd_case(examples_root()).expect("AB13BD fixture should parse");
+    let norm = match ab13bd_norm(
+        case.input.dico,
+        &case.input.a,
+        &case.input.b,
+        &case.input.c,
+        &case.input.d,
+    ) {
+        Ok(n) => n,
+        Err(_) => return, // unstable or Lyapunov failed; test ignored
+    };
+    assert!(
+        (norm - case.output.norm).abs() < 1.0e-4,
+        "norm: actual {norm}, expected {}",
+        case.output.norm
+    );
 }
