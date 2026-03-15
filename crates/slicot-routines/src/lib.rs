@@ -21,6 +21,7 @@ mod sg03ad;
 mod tb01pd;
 mod tb04ad;
 mod tb05ad;
+mod td04ad;
 
 pub use compatibility::{phase_one_compatibility, PythonControlUsage};
 pub use module_map::{target_rust_module_for_stem, TargetRustModule};
@@ -39,3 +40,4 @@ pub use sg03ad::{sg03ad_solve, Sg03AdError, Sg03AdResult};
 pub use tb01pd::{tb01pd_minreal, Tb01PdError, Tb01PdResult};
 pub use tb04ad::{tb04ad_transfer_matrix, Tb04AdError, Tb04AdResult, Tb04AdTransferPolynomial};
 pub use tb05ad::{tb05ad_frequency_response, Tb05AdError, Tb05AdResult};
+pub use td04ad::{td04ad_tf2ss, Td04AdError, Td04AdResult};
