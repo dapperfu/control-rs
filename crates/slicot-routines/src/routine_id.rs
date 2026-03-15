@@ -27,9 +27,13 @@ pub const PHASE_ONE_ROUTINES: [RoutineId; 23] = [
     RoutineId::Td04Ad,
 ];
 
+/// Phase-two SLICOT routines (second wave beyond the high-value python-control subset).
+pub const PHASE_TWO_ROUTINES: [RoutineId; 1] = [RoutineId::Ab07Nd];
+
 /// Known routine identifiers for the first implementation wave.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Hash)]
 pub enum RoutineId {
+    Ab07Nd,
     Ab08Nd,
     Ab09Ad,
     Ab09Md,
@@ -60,6 +64,7 @@ impl RoutineId {
     #[must_use]
     pub const fn stem(self) -> &'static str {
         match self {
+            Self::Ab07Nd => "AB07ND",
             Self::Ab08Nd => "AB08ND",
             Self::Ab09Ad => "AB09AD",
             Self::Ab09Md => "AB09MD",
@@ -99,6 +104,7 @@ impl RoutineId {
     #[must_use]
     pub fn from_stem(stem: &str) -> Option<Self> {
         match stem {
+            "AB07ND" => Some(Self::Ab07Nd),
             "AB08ND" => Some(Self::Ab08Nd),
             "AB09AD" => Some(Self::Ab09Ad),
             "AB09MD" => Some(Self::Ab09Md),
@@ -129,11 +135,14 @@ impl RoutineId {
 
 #[cfg(test)]
 mod tests {
-    use super::{RoutineId, PHASE_ONE_ROUTINES};
+    use super::{RoutineId, PHASE_ONE_ROUTINES, PHASE_TWO_ROUTINES};
 
     #[test]
     fn stems_round_trip() {
         for routine in PHASE_ONE_ROUTINES {
+            assert_eq!(RoutineId::from_stem(routine.stem()), Some(routine));
+        }
+        for routine in PHASE_TWO_ROUTINES {
             assert_eq!(RoutineId::from_stem(routine.stem()), Some(routine));
         }
     }

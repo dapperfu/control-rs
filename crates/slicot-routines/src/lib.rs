@@ -4,6 +4,7 @@
 
 //! Routine identifiers and shared metadata for pure-Rust SLICOT ports.
 
+mod ab07nd;
 mod ab08nd;
 mod ab09ad;
 mod ab09md;
@@ -34,6 +35,7 @@ mod td04ad;
 pub use compatibility::{phase_one_compatibility, PythonControlUsage};
 pub use mb03rd::{mb03rd_block_diagonalize, Mb03RdError, Mb03RdResult};
 pub use module_map::{target_rust_module_for_stem, TargetRustModule};
+pub use ab07nd::{ab07nd_inverse, Ab07NdError, Ab07NdResult};
 pub use ab08nd::{ab08nd_zeros, Ab08NdError, Ab08NdResult};
 pub use ab09ad::{ab09ad_balance_truncate, Ab09AdError, Ab09AdResult};
 pub use ab09md::{ab09md_balance_truncate, Ab09MdError, Ab09MdResult};
@@ -41,7 +43,7 @@ pub use ab09nd::{ab09nd_spa, Ab09NdError, Ab09NdResult};
 pub use ab13bd::{ab13bd_norm, Ab13BdError};
 pub use ab13dd::{ab13dd_norm, Ab13DdError, Ab13DdResult};
 pub use ab13md::{ab13md_norm, Ab13MdError};
-pub use routine_id::{RoutineId, PHASE_ONE_ROUTINES};
+pub use routine_id::{RoutineId, PHASE_ONE_ROUTINES, PHASE_TWO_ROUTINES};
 pub use sb01bd::{sb01bd_place, Sb01BdError, Sb01BdResult};
 pub use sb02md::{sb02md_solve, Sb02MdError, Sb02MdResult};
 pub use sb02mt::{sb02mt_transform, Sb02MtError, Sb02MtResult};
