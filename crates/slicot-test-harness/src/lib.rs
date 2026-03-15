@@ -4,6 +4,7 @@
 
 //! Test harness utilities for mirroring the upstream SLICOT example corpus.
 
+mod ab13bd;
 mod catalog;
 mod error;
 mod inventory;
@@ -17,6 +18,10 @@ mod sg03ad;
 mod tb04ad;
 mod tb05ad;
 
+pub use ab13bd::{
+    load_ab13bd_case, parse_ab13bd_input_file, parse_ab13bd_result_file, Ab13BdCase,
+    Ab13BdExampleError, Ab13BdInput, Ab13BdOutput,
+};
 pub use catalog::{discover_example_cases, ExampleCase};
 pub use error::CatalogError;
 pub use inventory::{discover_routine_inventory, RoutineInventoryEntry};
