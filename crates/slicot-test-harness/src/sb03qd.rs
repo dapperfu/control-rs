@@ -1,7 +1,6 @@
 //! Parsers for the upstream `SB03QD` (continuous Lyapunov) example assets.
 //!
-//! SB03QD is a separate SLICOT routine (Schur-based path); no golden routine
-//! test vs SB03MD until the same algorithm is ported.
+//! The golden routine test uses sb03md_solve (same equation form).
 
 use std::{
     fs,
