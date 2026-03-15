@@ -9,6 +9,7 @@ mod error;
 mod inventory;
 mod python_control;
 mod sb03md;
+mod sb03od;
 mod sb04md;
 mod sb04qd;
 mod sg03ad;
@@ -25,6 +26,10 @@ pub use python_control::{
 pub use sb03md::{
     load_sb03md_case, parse_sb03md_input_file, parse_sb03md_result_file, Sb03MdCase,
     Sb03MdExampleError, Sb03MdInput, Sb03MdOutput,
+};
+pub use sb03od::{
+    load_sb03od_case, parse_sb03od_input_file, parse_sb03od_result_file, Sb03OdCase,
+    Sb03OdExampleError, Sb03OdInput, Sb03OdOutput,
 };
 pub use sb04md::{
     load_sb04md_case, parse_sb04md_input_file, parse_sb04md_result_file, Sb04MdCase,
