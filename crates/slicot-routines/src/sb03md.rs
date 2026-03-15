@@ -111,34 +111,6 @@ pub fn sb03md_solve(
     Ok(Sb03MdResult { x, scale: 1.0 })
 }
 
-/// Solves the continuous-time Lyapunov equation `A X + X A' = scale * C` (SB03QD API).
-///
-/// Equivalent to `sb03md_solve('C', 'X', 'N', 'N', a, c)`.
-pub fn sb03qd_solve(a: &[Vec<f64>], c: &[Vec<f64>]) -> Result<Sb03MdResult, Sb03MdError> {
-    sb03md_solve('C', 'X', 'N', 'N', a, c)
-}
-
-/// Solves the discrete-time Lyapunov equation `A X A' - X = scale * C` (SB03SD API).
-///
-/// Equivalent to `sb03md_solve('D', 'X', 'N', 'N', a, c)`.
-pub fn sb03sd_solve(a: &[Vec<f64>], c: &[Vec<f64>]) -> Result<Sb03MdResult, Sb03MdError> {
-    sb03md_solve('D', 'X', 'N', 'N', a, c)
-}
-
-/// Solves the continuous-time Lyapunov equation `A' X + X A = scale * C` (SB03TD API).
-///
-/// Equivalent to `sb03md_solve('C', 'X', 'N', 'T', a, c)`.
-pub fn sb03td_solve(a: &[Vec<f64>], c: &[Vec<f64>]) -> Result<Sb03MdResult, Sb03MdError> {
-    sb03md_solve('C', 'X', 'N', 'T', a, c)
-}
-
-/// Solves the discrete-time Lyapunov equation `A' X A - X = scale * C` (SB03UD API).
-///
-/// Equivalent to `sb03md_solve('D', 'X', 'N', 'T', a, c)`.
-pub fn sb03ud_solve(a: &[Vec<f64>], c: &[Vec<f64>]) -> Result<Sb03MdResult, Sb03MdError> {
-    sb03md_solve('D', 'X', 'N', 'T', a, c)
-}
-
 fn multiply_transpose_self(u: &[Vec<f64>]) -> Vec<Vec<f64>> {
     let n = u.len();
     let mut out = vec![vec![0.0; n]; n];

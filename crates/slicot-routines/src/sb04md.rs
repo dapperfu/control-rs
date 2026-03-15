@@ -92,17 +92,6 @@ pub fn sb04md_solve(
     })
 }
 
-/// Solves the continuous-time Sylvester equation `A X + X B = C` (SB04ND API).
-///
-/// Equivalent to [`sb04md_solve`](crate::sb04md_solve).
-pub fn sb04nd_solve(
-    left_matrix: &[Vec<f64>],
-    right_matrix: &[Vec<f64>],
-    rhs_matrix: &[Vec<f64>],
-) -> Result<Sb04MdResult, Sb04MdError> {
-    sb04md_solve(left_matrix, right_matrix, rhs_matrix)
-}
-
 fn build_sylvester_system(a: &[Vec<f64>], b: &[Vec<f64>]) -> Vec<Vec<Complex64>> {
     let left_order = a.len();
     let right_order = b.len();
